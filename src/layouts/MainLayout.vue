@@ -5,12 +5,12 @@ const { menuItems } = useMainMenu()
 </script>
 
 <template>
-  <q-layout>
-    <q-header>
-      <q-toolbar>
-        <q-toolbar-title>Hotel</q-toolbar-title>
+  <q-layout class="app-shell" view="lHh Lpr lFf">
+    <q-header class="app-shell__header" elevated>
+      <q-toolbar class="app-shell__toolbar">
+        <q-toolbar-title class="app-shell__title">Hotel</q-toolbar-title>
 
-        <q-tabs>
+        <q-tabs class="app-shell__nav" dense inline-label no-caps>
           <q-route-tab
             v-for="item in menuItems"
             :key="item.to"
@@ -22,7 +22,7 @@ const { menuItems } = useMainMenu()
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
+    <q-page-container class="app-shell__content">
       <router-view />
     </q-page-container>
   </q-layout>

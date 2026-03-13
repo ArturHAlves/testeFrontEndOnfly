@@ -7,6 +7,12 @@
   box-shadow: $shadow-soft;
 }
 
+@mixin container {
+  max-width: $container-max-width;
+  width: 100%;
+  margin: 0 auto;
+}
+
 @mixin respond-md {
   @media (min-width: $bp-md) {
     @content;

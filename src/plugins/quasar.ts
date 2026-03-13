@@ -11,9 +11,10 @@ export function setupQuasar(app: App) {
     },
     config: {
       brand: {
-        primary: '#0f766e',
-        secondary: '#1f2937',
-        accent: '#f59e0b',
+        primary: '#009EFB',
+        secondary: '#007DC7',
+        accent: '#00835C',
+        info: '#ADADB3',
       },
     },
   })
