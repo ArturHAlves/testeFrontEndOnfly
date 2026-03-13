@@ -1,0 +1,79 @@
+@use './tokens' as *;
+@use './mixins' as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  color: $color-text;
+  background:
+    radial-gradient(circle at top right, rgba(153, 246, 228, 0.6), transparent 32%),
+    linear-gradient(160deg, #f8fafc 0%, $color-bg 100%);
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.home-page {
+  &__hero {
+    margin-bottom: 24px;
+  }
+
+  &__eyebrow {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: $color-muted;
+    margin: 0 0 8px;
+    font-weight: 700;
+  }
+
+  &__title {
+    font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  &__subtitle {
+    margin: 12px 0 0;
+    max-width: 700px;
+    color: $color-muted;
+    font-size: 1.05rem;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+
+    @include respond-md {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__card {
+    @include card-surface;
+  }
+
+  &__card-title {
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+    font-weight: 800;
+  }
+
+  &__card-text {
+    margin: 0;
+    color: $color-muted;
+  }
+}
+

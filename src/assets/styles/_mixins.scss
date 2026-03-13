@@ -1,0 +1,14 @@
+@use './tokens' as *;
+
+@mixin card-surface {
+  background-color: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  box-shadow: $shadow-soft;
+}
+
+@mixin respond-md {
+  @media (min-width: $bp-md) {
+    @content;
+  }
+}
