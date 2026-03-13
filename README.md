@@ -1,54 +1,55 @@
 # testeFrontOnFly
 
-This template should help get you started developing with Vue 3 in Vite.
+## Stack
 
-## Recommended IDE Setup
+- Vue 3 + TypeScript
+- Vite
+- Quasar V2
+- Sass (SCSS)
+- BEM para nomenclatura CSS
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Arquitetura
 
-## Recommended Browser Setup
+```text
+src/
+  assets/
+    styles/
+  composables/
+  constants/
+  layouts/
+  pages/
+  plugins/
+  router/
+  main.ts
+```
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+## Comandos
 
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## Padroes de design
 
-```sh
-npm run test:unit
-```
+### Cores
 
-### Lint with [ESLint](https://eslint.org/)
+- primary-100: #009EFB
+- primary-200: #007DC7
+- success-100: #00835C
+- info-100: #ADADB3
+- info-200: #84858C
+- info-300: #84858C
+- info-400: #696A71
+- info-500: #58585F
+- info-600: #434347
 
-```sh
-npm run lint
-```
+### Regras visuais
+
+- Container: tamanho maximo de 1200px
+- Espacamento: utilizar multiplos de 4
+- Arredondamento: utilizar multiplos de 4
+- Fonte: Poppins
+- Tamanho da fonte padrao: 12px
+- Tamanho dos titulos: 16px

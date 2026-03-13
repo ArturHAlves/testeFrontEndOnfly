@@ -1,0 +1,120 @@
+@use './tokens' as *;
+@use './mixins' as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  font-size: $font-size-base;
+  color: $color-text;
+  background: linear-gradient(180deg, #ffffff 0%, $color-bg 100%);
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.app-shell {
+  &__header {
+    background-color: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid $color-border;
+    backdrop-filter: blur(8px);
+  }
+
+  &__toolbar {
+    @include container;
+    min-height: 64px;
+    padding: 0 $space-4;
+    gap: $space-4;
+  }
+
+  &__title {
+    font-size: $font-size-title;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__nav {
+    .q-tab {
+      min-height: 36px;
+      border-radius: $radius-md;
+      padding: 0 $space-3;
+      font-size: $font-size-base;
+      font-weight: 500;
+    }
+
+    .q-tab--active {
+      background-color: rgba(0, 158, 251, 0.12);
+      color: $color-primary;
+    }
+  }
+
+  &__content {
+    @include container;
+    padding: 0 $space-4;
+  }
+}
+
+.home-page {
+  &__hero {
+    margin-bottom: $space-6;
+  }
+
+  &__eyebrow {
+    font-size: $font-size-base;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: $color-muted;
+    margin: 0 0 $space-2;
+    font-weight: 600;
+  }
+
+  &__title {
+    font-size: $font-size-title;
+    line-height: 1.4;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  &__subtitle {
+    margin: $space-3 0 0;
+    max-width: 700px;
+    color: $color-muted;
+    font-size: $font-size-base;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-4;
+
+    @include respond-md {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__card {
+    @include card-surface;
+  }
+
+  &__card-title {
+    margin: 0 0 $space-2;
+    font-size: $font-size-title;
+    font-weight: 600;
+  }
+
+  &__card-text {
+    margin: 0;
+    color: $color-muted;
+    font-size: $font-size-base;
+  }
+}
