@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import payload from '../../../payload.json'
+import { normalizeText } from '@/utils/text'
 
 interface City {
   name: string
@@ -28,12 +29,12 @@ const emit = defineEmits<{
 const cities = (payload.cities as City[]) ?? []
 
 const allOptions: Option[] = cities.map((city) => ({
-  label: `${city.name} - ${city.state.shortname}`,
+  label: `${city.name}, ${city.state.name}`,
   value: city.placeId,
   name: city.name,
 }))
 
-const options = ref<Option[]>([...allOptions])
+const options = ref<Option[]>([])
 
 const selectedOption = ref<Option | null>(
   allOptions.find((option) => option.value === props.modelValue) ?? null,
@@ -41,14 +42,19 @@ const selectedOption = ref<Option | null>(
 
 function onFilter(inputValue: string, update: (callback: () => void) => void) {
   update(() => {
-    const term = inputValue.trim().toLowerCase()
+    const term = normalizeText(inputValue)
 
-    if (!term) {
-      options.value = [...allOptions]
+    if (term.length < 3) {
+      options.value = []
       return
     }
 
-    options.value = allOptions.filter((option) => option.name.toLowerCase().includes(term))
+    options.value = allOptions.filter((option) => {
+      const city = normalizeText(option.name)
+      const label = normalizeText(option.label)
+
+      return city.includes(term) || label.includes(term)
+    })
   })
 }
 
@@ -69,6 +75,7 @@ function onUpdate(option: Option | null) {
     clearable
     outlined
     @filter="onFilter"
+    input-debounce="400"
     @update:model-value="onUpdate"
     dense
     label="Destino"
