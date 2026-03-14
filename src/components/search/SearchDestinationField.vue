@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import payload from '../../../payload.json'
 import { normalizeText } from '@/utils/text'
+import { watch } from 'vue'
 
 interface City {
   name: string
@@ -24,6 +25,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: number | string): void
+  (e: 'submit', value: number | null): void
 }>()
 
 const cities = (payload.cities as City[]) ?? []
@@ -35,9 +37,14 @@ const allOptions: Option[] = cities.map((city) => ({
 }))
 
 const options = ref<Option[]>([])
+const selectedOption = ref<Option | null>(null)
+const inputValue = ref('')
 
-const selectedOption = ref<Option | null>(
-  allOptions.find((option) => option.value === props.modelValue) ?? null,
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    selectedOption.value = allOptions.find((option) => option.value === newValue) ?? null
+  },
 )
 
 function onFilter(inputValue: string, update: (callback: () => void) => void) {
@@ -58,26 +65,46 @@ function onFilter(inputValue: string, update: (callback: () => void) => void) {
   })
 }
 
-function onUpdate(option: Option | null) {
-  selectedOption.value = option
-  emit('update:modelValue', option?.value ?? '')
+function onSubmit() {
+  emit('update:modelValue', selectedOption.value?.value ?? '')
+  selectedOption.value = null
+  options.value = []
+  inputValue.value = ''
 }
 </script>
 
 <template>
-  <q-select
-    :model-value="selectedOption"
-    :options="options"
-    option-label="label"
-    use-input
-    fill-input
-    hide-selected
-    clearable
-    outlined
-    @filter="onFilter"
-    input-debounce="400"
-    @update:model-value="onUpdate"
-    dense
-    label="Destino"
-  />
+  <div class="search-field">
+    <q-select
+      v-model="selectedOption"
+      :options="options"
+      option-label="label"
+      use-input
+      fill-input
+      hide-selected
+      clearable
+      outlined
+      @filter="onFilter"
+      input-debounce="400"
+      dense
+      label="Destino"
+    />
+
+    <q-btn
+      color="primary"
+      label="Buscar Hotel"
+      unelevated
+      :disable="!selectedOption"
+      @click="onSubmit"
+    />
+  </div>
 </template>
+
+<style scoped lang="scss">
+.search-field {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: end;
+}
+</style>
