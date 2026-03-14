@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "json-server": "json-server --watch payload.json --port 3000",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
@@ -40,6 +41,7 @@
     "eslint-plugin-vue": "~10.8.0",
     "jiti": "^2.6.1",
     "jsdom": "^28.1.0",
+    "json-server": "^0.17.4",
     "npm-run-all2": "^8.0.4",
     "oxlint": "~1.50.0",
     "prettier": "3.8.1",
