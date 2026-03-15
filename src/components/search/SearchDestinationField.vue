@@ -3,15 +3,7 @@ import { ref } from 'vue'
 import payload from '../../../payload.json'
 import { normalizeText } from '@/utils/text'
 import { watch } from 'vue'
-
-interface City {
-  name: string
-  state: {
-    name: string
-    shortname: string
-  }
-  placeId: number
-}
+import type { City } from '@/types/city'
 
 interface Option {
   label: string
@@ -38,7 +30,7 @@ const allOptions: Option[] = cities.map((city) => ({
 
 const options = ref<Option[]>([])
 const selectedOption = ref<Option | null>(null)
-const inputValue = ref('')
+const selectRef = ref<{ updateInputValue?: (value: string) => void } | null>(null)
 
 watch(
   () => props.modelValue,
@@ -66,10 +58,15 @@ function onFilter(inputValue: string, update: (callback: () => void) => void) {
 }
 
 function onSubmit() {
-  emit('update:modelValue', selectedOption.value?.value ?? '')
+  const value = selectedOption.value?.value ?? null
+  const placeId = typeof value === 'number' ? value : null
+
+  emit('submit', placeId)
+  emit('update:modelValue', placeId ?? '')
+
   selectedOption.value = null
   options.value = []
-  inputValue.value = ''
+  selectRef.value?.updateInputValue?.('')
 }
 </script>
 

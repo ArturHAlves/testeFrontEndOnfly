@@ -17,10 +17,7 @@ export class HotelService {
       ...filters,
     }
 
-    const response = await this.client.get<Hotel>(this.endpoint, params)
-
-    // console.log('[HotelService.getAll] params enviados:', params)
-    // console.log('[HotelService.getAll] retorno recebido:', response)
+    const response = await this.client.get<Hotel>(this.endpoint, params);
 
     return response
   }
