@@ -1,12 +1,13 @@
 @use '@/assets/styles/tokens' as *;
 
 .hotel-details {
-  width: min(420px, 100vw);
-  height: 100vh;
+  width: min(720px, 90vw);
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   background-color: $color-surface;
   box-shadow: $shadow-soft;
+  border-radius: $radius-lg;
 
   &__header {
     padding: $space-5;
@@ -40,6 +41,7 @@
     padding: $space-5;
     background: linear-gradient(180deg, rgba($color-primary, 0.04) 0%, $color-bg 40%);
     overflow-y: auto;
+    border-radius: 0 0 $radius-lg $radius-lg;
   }
 
   &__summary {

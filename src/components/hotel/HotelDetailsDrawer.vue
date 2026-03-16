@@ -38,9 +38,8 @@ const amenities = computed(() => props.details?.amenities ?? [])
 <template>
   <q-dialog
     v-model="isOpen"
-    position="right"
-    transition-show="slide-left"
-    transition-hide="slide-right"
+    transition-show="scale"
+    transition-hide="scale"
     backdrop-filter="blur(2px)"
   >
     <section class="hotel-details">
