@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import payload from '../../../payload.json'
+import { onMounted, ref, watch } from 'vue'
 import { normalizeText } from '@/utils/text'
 import type { City } from '@/types/city'
+import { CityService } from '@/services/cityService'
 import './search-destination-field.scss'
 
 interface Option {
@@ -20,24 +20,50 @@ const emit = defineEmits<{
   (e: 'submit', value: number | null): void
 }>()
 
-const cities = (payload.cities as City[]) ?? []
+const cityService = new CityService()
 
-const allOptions: Option[] = cities.map((city) => ({
-  label: `${city.name}, ${city.state.name}`,
-  value: city.placeId,
-  name: city.name,
-}))
-
+const allOptions = ref<Option[]>([])
 const options = ref<Option[]>([])
 const selectedOption = ref<Option | null>(null)
+
+function mapCityToOption(city: City): Option {
+  return {
+    label: `${city.name}, ${city.state.name}`,
+    value: city.placeId,
+    name: city.name,
+  }
+}
+
+function syncSelectedOption(value: number | string) {
+  if (!value) {
+    selectedOption.value = null
+    return
+  }
+
+  selectedOption.value = allOptions.value.find((option) => option.value === value) ?? null
+}
 
 watch(
   () => props.modelValue,
   (newValue) => {
-    selectedOption.value = allOptions.find((option) => option.value === newValue) ?? null
+    syncSelectedOption(newValue)
   },
   { immediate: true },
 )
+
+async function loadCities() {
+  try {
+    const cities = await cityService.getAll()
+    allOptions.value = cities.map(mapCityToOption)
+    syncSelectedOption(props.modelValue)
+  } catch (error) {
+    console.error('Não foi possível carregar as cidades.', error)
+  }
+}
+
+onMounted(() => {
+  loadCities()
+})
 
 function onFilter(inputValue: string, update: (callback: () => void) => void) {
   update(() => {
@@ -48,7 +74,7 @@ function onFilter(inputValue: string, update: (callback: () => void) => void) {
       return
     }
 
-    options.value = allOptions.filter((option) => {
+    options.value = allOptions.value.filter((option) => {
       const city = normalizeText(option.name)
       const label = normalizeText(option.label)
 
