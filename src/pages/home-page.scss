@@ -1,0 +1,11 @@
+@use '@/assets/styles/tokens' as *;
+@use '@/assets/styles/mixins' as *;
+
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  padding: $space-5 0 $space-6;
+
+}

@@ -2,6 +2,7 @@
 import type { Hotel } from '@/types/hotel'
 import { computed } from 'vue'
 import { formatAmenityName, formatCurrencyFromCents } from '@/utils/formatters'
+import './hotel-card.scss'
 
 const props = defineProps<{
   hotel: Hotel

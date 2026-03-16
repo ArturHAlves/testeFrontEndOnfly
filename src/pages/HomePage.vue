@@ -4,6 +4,7 @@ import { reactive, ref } from 'vue'
 import { HotelService } from '@/services/hotelService'
 import type { Hotel } from '@/types/hotel'
 import HotelCard from '@/components/hotel/HotelCard.vue'
+import './home-page.scss'
 
 const hotelService = new HotelService()
 
@@ -17,7 +18,7 @@ const pagination = reactive({
   limit: 6,
   totalItems: 0,
   totalPages: 1,
-});
+})
 
 async function fetchHotels(page = pagination.page) {
   if (!lastSearchPlaceId.value) return
@@ -61,9 +62,22 @@ function handleSubmit(placeId: number | null) {
 </script>
 
 <template>
-  <SearchDestinationField v-model="selectedPlaceId" @submit="handleSubmit" />
+  <section class="home-page">
+    <section class="home-page__search-card">
+      <div class="home-page__search-header">
+        <div>
+          <p class="home-page__eyebrow">Filtro</p>
+          <h2 class="home-page__card-title">Destino</h2>
+          <p class="home-page__card-text">
+            Digite pelo menos tres letras, confirme em \"Buscar Hotel\" e carregaremos a lista
+            paginada.
+          </p>
+        </div>
+      </div>
 
-  <p>selecionado: {{ selectedPlaceId }}</p>
+      <SearchDestinationField v-model="selectedPlaceId" @submit="handleSubmit" />
+    </section>
+  </section>
 
   <HotelCard v-for="hotel in hotels" :key="hotel.id" :hotel="hotel" />
 </template>
