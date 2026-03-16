@@ -6,17 +6,17 @@ const amenityLabels: Record<string, string> = {
   GYM: 'Academia',
   RESTAURANT: 'Restaurante',
   ROOM_SERVICE: 'Servico de quarto',
-}
+};
 
 export function formatAmenityName(code: string): string {
-  return amenityLabels[code] ?? code.replace(/_/g, ' ')
+  return amenityLabels[code] ?? code.replace(/_/g, ' ');
 }
 
 const brlFormatter = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
   currency: 'BRL',
-})
+});
 
 export function formatCurrencyFromCents(valueInCents: number): string {
-  return brlFormatter.format(valueInCents / 100)
+  return brlFormatter.format(valueInCents / 100);
 }

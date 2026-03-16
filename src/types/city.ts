@@ -1,8 +1,8 @@
 export interface City {
-  name: string
+  name: string;
   state: {
-    name: string
-    shortname: string
-  }
-  placeId: number
+    name: string;
+    shortname: string;
+  };
+  placeId: number;
 }

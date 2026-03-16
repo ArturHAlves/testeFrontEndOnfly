@@ -1,44 +1,44 @@
 <script setup lang="ts">
-import type { Hotel, HotelDetails } from '@/types/hotel'
-import { computed } from 'vue'
-import './hotel-details-drawer.scss'
+import type { Hotel, HotelDetails } from '@/types/hotel';
+import { computed } from 'vue';
+import './hotel-details-drawer.scss';
 
 const props = defineProps<{
-  modelValue: boolean
-  hotel: Hotel | null
-  details: HotelDetails | null
-  loading: boolean
-  errorMessage: string
-}>()
+  modelValue: boolean;
+  hotel: Hotel | null;
+  details: HotelDetails | null;
+  loading: boolean;
+  errorMessage: string;
+}>();
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: boolean): void
-}>()
+  (e: 'update:modelValue', value: boolean): void;
+}>();
 
 const isOpen = computed({
   get: () => props.modelValue,
   set: (value: boolean) => emit('update:modelValue', value),
-})
+});
 
 const galleryImages = computed(() => {
   if (props.details?.images?.length) {
-    return props.details.images
+    return props.details.images;
   }
 
   if (props.hotel) {
-    return [props.hotel.thumb]
+    return [props.hotel.thumb];
   }
 
-  return []
-})
+  return [];
+});
 
-const amenities = computed(() => props.details?.amenities ?? [])
+const amenities = computed(() => props.details?.amenities ?? []);
 
 const starIcons = computed(() => {
-  const rawRating = Number(props.hotel?.stars ?? 0)
-  const rating = Math.max(0, Math.min(5, Math.round(rawRating)))
-  return Array.from({ length: 5 }, (_, index) => index < rating)
-})
+  const rawRating = Number(props.hotel?.stars ?? 0);
+  const rating = Math.max(0, Math.min(5, Math.round(rawRating)));
+  return Array.from({ length: 5 }, (_, index) => index < rating);
+});
 </script>
 
 <template>

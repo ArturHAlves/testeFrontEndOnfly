@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import type { Hotel } from '@/types/hotel'
-import { computed } from 'vue'
-import { formatAmenityName, formatCurrencyFromCents } from '@/utils/formatters'
-import './hotel-card.scss'
+import type { Hotel } from '@/types/hotel';
+import { computed } from 'vue';
+import { formatAmenityName, formatCurrencyFromCents } from '@/utils/formatters';
+import './hotel-card.scss';
 
 const props = defineProps<{
-  hotel: Hotel
-}>()
+  hotel: Hotel;
+}>();
 
 const emit = defineEmits<{
-  (e: 'show-details', hotel: Hotel): void
-}>()
+  (e: 'show-details', hotel: Hotel): void;
+}>();
 
-const visibleAmenities = computed(() => props.hotel.amenities.slice(0, 3))
+const visibleAmenities = computed(() => props.hotel.amenities.slice(0, 3));
 
 const starIcons = computed(() => {
-  const numericStars = Number(props.hotel?.stars ?? 0)
-  const rating = Math.max(0, Math.min(5, Math.round(numericStars)))
-  return Array.from({ length: 5 }, (_, index) => index < rating)
-})
+  const numericStars = Number(props.hotel?.stars ?? 0);
+  const rating = Math.max(0, Math.min(5, Math.round(numericStars)));
+  return Array.from({ length: 5 }, (_, index) => index < rating);
+});
 
 function handleDetailsClick() {
-  emit('show-details', props.hotel)
+  emit('show-details', props.hotel);
 }
 </script>
 
