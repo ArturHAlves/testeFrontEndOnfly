@@ -45,7 +45,7 @@ const amenities = computed(() => props.details?.amenities ?? [])
     <section class="hotel-details">
       <header class="hotel-details__header">
         <div>
-          <p>{{ hotel?.name }}</p>
+          <p class="hotel-details__title">{{ hotel?.name ?? 'Detalhes do hotel' }}</p>
         </div>
 
         <q-btn icon="close" flat round dense color="white" @click="isOpen = false" />
@@ -59,12 +59,20 @@ const amenities = computed(() => props.details?.amenities ?? [])
         </p>
 
         <div v-else class="hotel-details__content">
-          <section v-if="galleryImages.length" class="hotel-details__section">
-            <span class="hotel-card__stars">{{ hotel?.stars }}*</span>
+          <section v-if="galleryImages.length" class="hotel-details__gallery-card">
+            <span class="hotel-details__stars">{{ hotel?.stars }} ★</span>
             <div class="hotel-details__gallery">
               <figure v-for="image in galleryImages" :key="image">
                 <img :src="image" :alt="hotel?.name" loading="lazy" />
               </figure>
+            </div>
+            <div class="hotel-details__gallery-nav">
+              <button aria-label="Imagem anterior">
+                <span class="material-icons">chevron_left</span>
+              </button>
+              <button aria-label="Próxima imagem">
+                <span class="material-icons">chevron_right</span>
+              </button>
             </div>
           </section>
 
@@ -72,6 +80,7 @@ const amenities = computed(() => props.details?.amenities ?? [])
             <h3>Comodidades</h3>
             <ul class="hotel-details__amenities">
               <li v-for="amenity in amenities" :key="amenity.key">
+                <span class="material-icons">check_circle</span>
                 {{ amenity.label }}
               </li>
             </ul>
