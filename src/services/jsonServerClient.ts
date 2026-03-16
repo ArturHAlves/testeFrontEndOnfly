@@ -39,4 +39,14 @@ export class JsonServerClient {
       },
     }
   }
+
+  async getById<T>(endpoint: string, id: number): Promise<T> {
+    const response = await fetch(`${this.baseUrl}/${endpoint}/${id}`)
+
+    if (!response.ok) {
+      throw new Error(`Falha na busca por ID. Status: ${response.status}`)
+    }
+
+    return response.json() as Promise<T>
+  }
 }
