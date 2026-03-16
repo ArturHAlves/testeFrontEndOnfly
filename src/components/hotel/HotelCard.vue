@@ -60,24 +60,25 @@ function handleDetailsClick() {
           <h3 class="hotel-card__title">{{ hotel.name }}</h3>
           <p class="hotel-card__district">{{ hotel.district }}</p>
         </div>
+      </header>
 
+      <div class="hotel-card__amenities-badges">
         <ul class="hotel-card__amenities">
           <li v-for="amenity in visibleAmenities" :key="amenity">
             {{ formatAmenityName(amenity) }}
           </li>
         </ul>
-      </header>
-
-      <ul class="hotel-card__badges">
-        <li v-if="hotel.hasRefundableRoom">
-          <span class="material-icons">autorenew</span>
-          Reembolsável
-        </li>
-        <li v-if="hotel.hasBreakFast">
-          <span class="material-icons">restaurant</span>
-          Café da manhã
-        </li>
-      </ul>
+        <ul class="hotel-card__badges">
+          <li v-if="hotel.hasRefundableRoom">
+            <span class="material-icons">autorenew</span>
+            Reembolsável
+          </li>
+          <li v-if="hotel.hasBreakFast">
+            <span class="material-icons">restaurant</span>
+            Café da manhã
+          </li>
+        </ul>
+      </div>
     </div>
 
     <div class="hotel-card__pricing">
