@@ -1,6 +1,6 @@
 import type { apiData } from '@/types/api'
 import { JsonServerClient } from './jsonServerClient'
-import type { Hotel, HotelFilters, PaginationOptions } from '@/types/hotel'
+import type { Hotel, HotelDetails, HotelFilters, PaginationOptions } from '@/types/hotel'
 
 export class HotelService {
   private readonly client: JsonServerClient
@@ -17,7 +17,17 @@ export class HotelService {
       ...filters,
     }
 
-    const response = await this.client.get<Hotel>(this.endpoint, params);
+    const response = await this.client.get<Hotel>(this.endpoint, params)
+
+    return response
+  }
+
+  async getDetailsById(id: number): Promise<HotelDetails> {
+    const response = await this.client.getById<HotelDetails>(`${this.endpoint}_details`, id)
+
+    if (!response) {
+      throw new Error(`Detalhes do hotel não encontrados.`)
+    }
 
     return response
   }

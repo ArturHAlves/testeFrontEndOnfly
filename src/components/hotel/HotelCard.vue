@@ -8,7 +8,15 @@ const props = defineProps<{
   hotel: Hotel
 }>()
 
+const emit = defineEmits<{
+  (e: 'show-details', hotel: Hotel): void
+}>()
+
 const visibleAmenities = computed(() => props.hotel.amenities.slice(0, 3))
+
+function handleDetailsClick() {
+  emit('show-details', props.hotel)
+}
 </script>
 
 <template>
@@ -46,7 +54,7 @@ const visibleAmenities = computed(() => props.hotel.amenities.slice(0, 3))
         </p>
       </div>
 
-      <q-btn label="Ver detalhes" color="primary" flat size="sm" />
+      <q-btn label="Ver detalhes" color="primary" flat size="sm" @click="handleDetailsClick" />
     </div>
   </article>
 </template>
