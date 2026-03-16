@@ -120,9 +120,11 @@ function onSubmit() {
     <q-btn
       color="primary"
       label="Buscar Hotel"
+      icon="search"
       unelevated
       rounded
-      size="lg"
+      size="md"
+      class="search-field__submit"
       :disable="!selectedOption"
       @click="onSubmit"
     />

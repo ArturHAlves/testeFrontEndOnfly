@@ -2,21 +2,39 @@
 
 .search-field {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
+  grid-template-columns: 350px auto;
+  gap: $space-2;
   align-items: center;
-  padding: 6px;
+  padding: 8px 12px;
   background: #f4f6fb;
-  border-radius: $radius-lg;
+  border-radius: 999px;
 
   :deep(.q-field--outlined .q-field__control) {
-    border-radius: $radius-md;
+    border-radius: 999px;
     background: #fff;
-    padding-left: 20px;
+    padding-left: 18px;
+    min-height: 48px;
+  }
+
+  :deep(.q-field__native),
+  :deep(.q-field__label) {
+    font-size: $font-size-base;
   }
 
   :deep(.q-field__native) {
-    font-size: 16px;
     font-weight: 500;
+  }
+
+  &__submit {
+    min-width: 140px;
+    height: 44px;
+    border-radius: 999px;
+    font-size: $font-size-title;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    justify-self: end;
   }
 }
