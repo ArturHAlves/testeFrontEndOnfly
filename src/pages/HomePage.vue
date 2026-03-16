@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import SearchDestinationField from '@/components/search/SearchDestinationField.vue'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { HotelService } from '@/services/hotelService'
-import type { Hotel } from '@/types/hotel'
+import type { Hotel, HotelDetails } from '@/types/hotel'
 import HotelCard from '@/components/hotel/HotelCard.vue'
 import './home-page.scss'
 
@@ -13,6 +13,11 @@ const hotels = ref<Hotel[]>([])
 const errorMessage = ref<string>('')
 const loading = ref(false)
 const lastSearchPlaceId = ref<number | null>(null)
+const isDetailsModalOpen = ref(false)
+const selectedHotelId = ref<number | null>(null)
+const deatilsLoading = ref(false)
+const detailsErrorMessage = ref('')
+const hotelDetails = ref<HotelDetails | null>(null)
 const pagination = reactive({
   page: 1,
   limit: 6,
@@ -20,7 +25,7 @@ const pagination = reactive({
   totalPages: 1,
 })
 
-async function fetchHotels(
+async function loadHotelsList(
   page = pagination.page,
   placeId: number | null = lastSearchPlaceId.value,
 ) {
@@ -51,16 +56,42 @@ async function fetchHotels(
 
 function handleSubmit(placeId: number | null) {
   lastSearchPlaceId.value = placeId
-  fetchHotels(1, placeId)
+  loadHotelsList(1, placeId)
 }
 
 function handlePageChange(newPage: number) {
   pagination.page = newPage
-  fetchHotels(newPage)
+  loadHotelsList(newPage)
 }
 
+async function openHotelDetails(hotelId: number) {
+  selectedHotelId.value = hotelId
+  isDetailsModalOpen.value = true
+  detailsErrorMessage.value = ''
+  deatilsLoading.value = true
+
+  try {
+    hotelDetails.value = await hotelService.getDetailsById(hotelId)
+  } catch (error) {
+    detailsErrorMessage.value =
+      error instanceof Error
+        ? error.message
+        : 'Não foi possível carregar os detalhes do hotel. Tente novamente mais tarde.'
+  } finally {
+    deatilsLoading.value = false
+  }
+}
+
+watch(isDetailsModalOpen, (isOpen) => {
+  if (!isOpen) {
+    hotelDetails.value = null
+    selectedHotelId.value = null
+    detailsErrorMessage.value = ''
+  }
+})
+
 onMounted(() => {
-  fetchHotels(1, null)
+  loadHotelsList(1, null)
 })
 </script>
 
@@ -80,7 +111,12 @@ onMounted(() => {
       </p>
 
       <div v-else class="home-page">
-        <HotelCard v-for="hotel in hotels" :key="hotel.id" :hotel="hotel" />
+        <HotelCard
+          v-for="hotel in hotels"
+          :key="hotel.id"
+          :hotel="hotel"
+          @show-details="openHotelDetails"
+        />
       </div>
     </section>
 
@@ -95,5 +131,7 @@ onMounted(() => {
       class="home-page_pagination"
       @update:model-value="handlePageChange"
     />
+
+    <HotelDetailsDrawer />
   </section>
 </template>
