@@ -5,6 +5,7 @@ import { HotelService } from '@/services/hotelService'
 import type { Hotel, HotelDetails } from '@/types/hotel'
 import HotelCard from '@/components/hotel/HotelCard.vue'
 import './home-page.scss'
+import HotelDetailsDrawer from '@/components/hotel/HotelDetailsDrawer.vue'
 
 const hotelService = new HotelService()
 
@@ -14,7 +15,7 @@ const errorMessage = ref<string>('')
 const loading = ref(false)
 const lastSearchPlaceId = ref<number | null>(null)
 const isDetailsModalOpen = ref(false)
-const selectedHotelId = ref<number | null>(null)
+const selectedHotel = ref<Hotel | null>(null)
 const deatilsLoading = ref(false)
 const detailsErrorMessage = ref('')
 const hotelDetails = ref<HotelDetails | null>(null)
@@ -64,14 +65,14 @@ function handlePageChange(newPage: number) {
   loadHotelsList(newPage)
 }
 
-async function openHotelDetails(hotelId: number) {
-  selectedHotelId.value = hotelId
+async function openHotelDetails(hotel: Hotel) {
+  selectedHotel.value = hotel
   isDetailsModalOpen.value = true
   detailsErrorMessage.value = ''
   deatilsLoading.value = true
 
   try {
-    hotelDetails.value = await hotelService.getDetailsById(hotelId)
+    hotelDetails.value = await hotelService.getDetailsById(hotel.id)
   } catch (error) {
     detailsErrorMessage.value =
       error instanceof Error
@@ -85,7 +86,7 @@ async function openHotelDetails(hotelId: number) {
 watch(isDetailsModalOpen, (isOpen) => {
   if (!isOpen) {
     hotelDetails.value = null
-    selectedHotelId.value = null
+    selectedHotel.value = null
     detailsErrorMessage.value = ''
   }
 })
@@ -132,6 +133,13 @@ onMounted(() => {
       @update:model-value="handlePageChange"
     />
 
-    <HotelDetailsDrawer />
+    <HotelDetailsDrawer
+      v-model="isDetailsModalOpen"
+      :hotel="selectedHotel"
+      :details="hotelDetails"
+      :loading="deatilsLoading"
+      :error-message="detailsErrorMessage"
+    />
+
   </section>
 </template>

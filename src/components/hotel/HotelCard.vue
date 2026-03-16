@@ -9,13 +9,13 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'show-details', hotelId: number): void
+  (e: 'show-details', hotel: Hotel): void
 }>()
 
 const visibleAmenities = computed(() => props.hotel.amenities.slice(0, 3))
 
 function handleDetailsClick() {
-  emit('show-details', props.hotel.id)
+  emit('show-details', props.hotel)
 }
 </script>
 
