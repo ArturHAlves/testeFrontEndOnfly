@@ -1,8 +1,8 @@
-import { describe, expect, it, vi } from 'vitest'
-import { HotelService } from '@/services/hotelService'
-import type { JsonServerClient } from '@/services/jsonServerClient'
-import type { Hotel, HotelDetails } from '@/types/hotel'
-import type { apiData } from '@/types/api'
+import { describe, expect, it, vi } from 'vitest';
+import { HotelService } from '@/services/hotelService';
+import type { JsonServerClient } from '@/services/jsonServerClient';
+import type { Hotel, HotelDetails } from '@/types/hotel';
+import type { apiData } from '@/types/api';
 
 describe('HotelService', () => {
   it('passes filters and pagination params to the client when fetching hotels', async () => {
@@ -21,7 +21,7 @@ describe('HotelService', () => {
         district: 'Centro',
         placeId: 10,
       },
-    ]
+    ];
 
     const response: apiData<Hotel> = {
       data: hotels,
@@ -31,14 +31,14 @@ describe('HotelService', () => {
         totalItems: 1,
         totalPages: 1,
       },
-    }
+    };
 
-    const getMock = vi.fn().mockResolvedValue(response)
+    const getMock = vi.fn().mockResolvedValue(response);
 
     const service = new HotelService({
       get: getMock,
       getById: vi.fn(),
-    } as unknown as JsonServerClient)
+    } as unknown as JsonServerClient);
 
     const result = await service.getAll(
       {
@@ -51,7 +51,7 @@ describe('HotelService', () => {
         page: 2,
         limit: 5,
       },
-    )
+    );
 
     expect(getMock).toHaveBeenCalledWith('hotels', {
       page: 2,
@@ -60,9 +60,9 @@ describe('HotelService', () => {
       _sort: 'totalPrice',
       _order: 'desc',
       name_like: 'Center',
-    })
-    expect(result).toEqual(response)
-  })
+    });
+    expect(result).toEqual(response);
+  });
 
   it('fetches hotel details by id', async () => {
     const details: HotelDetails = {
@@ -75,29 +75,29 @@ describe('HotelService', () => {
       hasRefundableRoom: true,
       fullAddress: 'Rua 123',
       images: [],
-    }
+    };
 
-    const getByIdMock = vi.fn().mockResolvedValue(details)
+    const getByIdMock = vi.fn().mockResolvedValue(details);
 
     const service = new HotelService({
       get: vi.fn(),
       getById: getByIdMock,
-    } as unknown as JsonServerClient)
+    } as unknown as JsonServerClient);
 
-    const result = await service.getDetailsById(1)
+    const result = await service.getDetailsById(1);
 
-    expect(getByIdMock).toHaveBeenCalledWith('hotels_details', 1)
-    expect(result).toEqual(details)
-  })
+    expect(getByIdMock).toHaveBeenCalledWith('hotels_details', 1);
+    expect(result).toEqual(details);
+  });
 
   it('throws when hotel details are missing', async () => {
-    const getByIdMock = vi.fn().mockResolvedValue(null)
+    const getByIdMock = vi.fn().mockResolvedValue(null);
 
     const service = new HotelService({
       get: vi.fn(),
       getById: getByIdMock,
-    } as unknown as JsonServerClient)
+    } as unknown as JsonServerClient);
 
-    await expect(service.getDetailsById(1)).rejects.toThrow('Detalhes do hotel não encontrados.')
-  })
-})
+    await expect(service.getDetailsById(1)).rejects.toThrow('Detalhes do hotel não encontrados.');
+  });
+});

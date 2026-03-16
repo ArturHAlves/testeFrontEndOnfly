@@ -16,7 +16,7 @@ body {
   font-family: 'Poppins', 'Segoe UI', sans-serif;
   font-size: $font-size-base;
   color: $color-text;
-  background: linear-gradient(180deg, #ffffff 0%, $color-bg 100%);
+  background: $color-primary-100;
 }
 
 #app {
@@ -24,6 +24,9 @@ body {
 }
 
 .app-shell {
+  min-height: 100vh;
+  padding: $space-6 0 $space-8;
+
   &__header {
     background-color: rgba(255, 255, 255, 0.96);
     border-bottom: 1px solid $color-border;
@@ -61,6 +64,7 @@ body {
   &__content {
     @include container;
     padding: 0 $space-4;
+    width: 100%;
   }
 }
 

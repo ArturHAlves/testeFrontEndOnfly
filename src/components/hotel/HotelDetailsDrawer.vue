@@ -1,38 +1,44 @@
 <script setup lang="ts">
-import type { Hotel, HotelDetails } from '@/types/hotel'
-import { computed } from 'vue'
-import './hotel-details-drawer.scss'
+import type { Hotel, HotelDetails } from '@/types/hotel';
+import { computed } from 'vue';
+import './hotel-details-drawer.scss';
 
 const props = defineProps<{
-  modelValue: boolean
-  hotel: Hotel | null
-  details: HotelDetails | null
-  loading: boolean
-  errorMessage: string
-}>()
+  modelValue: boolean;
+  hotel: Hotel | null;
+  details: HotelDetails | null;
+  loading: boolean;
+  errorMessage: string;
+}>();
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: boolean): void
-}>()
+  (e: 'update:modelValue', value: boolean): void;
+}>();
 
 const isOpen = computed({
   get: () => props.modelValue,
   set: (value: boolean) => emit('update:modelValue', value),
-})
+});
 
 const galleryImages = computed(() => {
   if (props.details?.images?.length) {
-    return props.details.images
+    return props.details.images;
   }
 
   if (props.hotel) {
-    return [props.hotel.thumb]
+    return [props.hotel.thumb];
   }
 
-  return []
-})
+  return [];
+});
 
-const amenities = computed(() => props.details?.amenities ?? [])
+const amenities = computed(() => props.details?.amenities ?? []);
+
+const starIcons = computed(() => {
+  const rawRating = Number(props.hotel?.stars ?? 0);
+  const rating = Math.max(0, Math.min(5, Math.round(rawRating)));
+  return Array.from({ length: 5 }, (_, index) => index < rating);
+});
 </script>
 
 <template>
@@ -45,7 +51,7 @@ const amenities = computed(() => props.details?.amenities ?? [])
     <section class="hotel-details">
       <header class="hotel-details__header">
         <div>
-          <p>{{ hotel?.name }}</p>
+          <p class="hotel-details__title">{{ hotel?.name ?? 'Detalhes do hotel' }}</p>
         </div>
 
         <q-btn icon="close" flat round dense color="white" @click="isOpen = false" />
@@ -59,12 +65,32 @@ const amenities = computed(() => props.details?.amenities ?? [])
         </p>
 
         <div v-else class="hotel-details__content">
-          <section v-if="galleryImages.length" class="hotel-details__section">
-            <span class="hotel-card__stars">{{ hotel?.stars }}*</span>
+          <section v-if="galleryImages.length" class="hotel-details__gallery-card">
+            <div class="hotel-details__stars" aria-label="Classificação do hotel">
+              <span
+                v-for="(isFilled, index) in starIcons"
+                :key="index"
+                :class="[
+                  'material-icons',
+                  'hotel-details__star',
+                  isFilled ? 'hotel-details__star--active' : 'hotel-details__star--inactive',
+                ]"
+              >
+                star
+              </span>
+            </div>
             <div class="hotel-details__gallery">
               <figure v-for="image in galleryImages" :key="image">
                 <img :src="image" :alt="hotel?.name" loading="lazy" />
               </figure>
+            </div>
+            <div class="hotel-details__gallery-nav">
+              <button aria-label="Imagem anterior">
+                <span class="material-icons">chevron_left</span>
+              </button>
+              <button aria-label="Próxima imagem">
+                <span class="material-icons">chevron_right</span>
+              </button>
             </div>
           </section>
 
@@ -72,6 +98,7 @@ const amenities = computed(() => props.details?.amenities ?? [])
             <h3>Comodidades</h3>
             <ul class="hotel-details__amenities">
               <li v-for="amenity in amenities" :key="amenity.key">
+                <span class="material-icons">check_circle</span>
                 {{ amenity.label }}
               </li>
             </ul>

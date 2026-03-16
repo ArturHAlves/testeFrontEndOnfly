@@ -14,8 +14,6 @@
 src/
   assets/
     styles/
-  composables/
-  constants/
   layouts/
   pages/
   plugins/

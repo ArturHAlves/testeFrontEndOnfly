@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import './search-filters-bar.scss'
+import { computed } from 'vue';
+import './search-filters-bar.scss';
 
-type SortOptionValue = string | number
+type SortOptionValue = string | number;
 
 const props = defineProps<{
-  sortOptions: ReadonlyArray<{ label: string; value: SortOptionValue }>
-  sortValue: SortOptionValue
-  hotelName: string | null
-}>()
+  sortOptions: ReadonlyArray<{ label: string; value: SortOptionValue }>;
+  sortValue: SortOptionValue;
+  hotelName: string | null;
+}>();
 
 const emit = defineEmits<{
-  (e: 'update:sortValue', value: SortOptionValue): void
-  (e: 'update:hotelName', value: string | null): void
-}>()
+  (e: 'update:sortValue', value: SortOptionValue): void;
+  (e: 'update:hotelName', value: string | null): void;
+}>();
 
 const sortModel = computed({
   get: () => props.sortValue,
   set: (value: SortOptionValue) => emit('update:sortValue', value),
-})
+});
 
 const hotelNameModel = computed({
   get: () => props.hotelName,
   set: (value: string | null | undefined) => emit('update:hotelName', value ?? null),
-})
+});
 </script>
 
 <template>

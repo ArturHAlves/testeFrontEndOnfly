@@ -1,33 +1,52 @@
 @use '@/assets/styles/tokens' as *;
 
 .search-filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: flex;
   gap: $space-3;
-  background: $color-surface;
-  border-radius: 999px;
-  padding: $space-2 $space-3;
-  box-shadow: $shadow-soft;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  justify-content: center;
 
   &__sort {
+    background: $color-surface;
+    border-radius: $radius-md;
+    box-shadow: $shadow-soft;
+    padding: $space-2 $space-3;
     display: flex;
     align-items: center;
     gap: $space-2;
+    min-width: 220px;
+    max-width: 260px;
+    flex: 1 1 220px;
   }
 
   &__label {
     margin: 0;
-    font-size: 14px;
+    font-size: $font-size-base;
     font-weight: 600;
     color: $color-muted;
   }
 
-  &__select,
-  &__input {
+  &__select {
     width: 100%;
-
+    min-width: 120px;
     :deep(.q-field__control) {
-      border-radius: 999px;
+      border-radius: $radius-md;
+    }
+  }
+
+  &__input {
+    background: $color-surface;
+    border-radius: $radius-md;
+    box-shadow: $shadow-soft;
+    padding: $space-2 $space-3;
+    width: 100%;
+    min-width: 220px;
+    max-width: 320px;
+    flex: 2 1 220px;
+    :deep(.q-field__control) {
+      border-radius: $radius-md;
     }
   }
 }

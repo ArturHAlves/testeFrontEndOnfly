@@ -1,153 +1,151 @@
 <script setup lang="ts">
-import SearchDestinationField from '@/components/search/SearchDestinationField.vue'
-import SearchFiltersBar from '@/components/search/SearchFiltersBar.vue'
-import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import { HotelService } from '@/services/hotelService'
-import type { Hotel, HotelDetails } from '@/types/hotel'
-import HotelCard from '@/components/hotel/HotelCard.vue'
-import './home-page.scss'
-import HotelDetailsDrawer from '@/components/hotel/HotelDetailsDrawer.vue'
+import SearchDestinationField from '@/components/search/SearchDestinationField.vue';
+import SearchFiltersBar from '@/components/search/SearchFiltersBar.vue';
+import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
+import { HotelService } from '@/services/hotelService';
+import type { Hotel, HotelDetails } from '@/types/hotel';
+import HotelCard from '@/components/hotel/HotelCard.vue';
+import './home-page.scss';
+import HotelDetailsDrawer from '@/components/hotel/HotelDetailsDrawer.vue';
 
-const hotelService = new HotelService()
+const hotelService = new HotelService();
 
-const selectedPlaceId = ref<number | string>('')
-const hotels = ref<Hotel[]>([])
-const errorMessage = ref<string>('')
-const loading = ref(false)
-const lastSearchPlaceId = ref<number | null>(null)
-const isDetailsModalOpen = ref(false)
-const selectedHotel = ref<Hotel | null>(null)
-const detailsLoading = ref(false)
-const detailsErrorMessage = ref('')
-const hotelDetails = ref<HotelDetails | null>(null)
+const selectedPlaceId = ref<number | string>('');
+const hotels = ref<Hotel[]>([]);
+const errorMessage = ref<string>('');
+const loading = ref(false);
+const lastSearchPlaceId = ref<number | null>(null);
+const isDetailsModalOpen = ref(false);
+const selectedHotel = ref<Hotel | null>(null);
+const detailsLoading = ref(false);
+const detailsErrorMessage = ref('');
+const hotelDetails = ref<HotelDetails | null>(null);
 const sortSelectOptions = [
   { label: 'Preço', value: 'price' },
   { label: 'Estrelas', value: 'stars' },
-] as const
-type SortOption = (typeof sortSelectOptions)[number]['value']
-const selectedSortOption = ref<SortOption>('price')
-const hotelNameQuery = ref<string | null>('')
-let hotelNameDebounce: ReturnType<typeof setTimeout> | null = null
+] as const;
+type SortOption = (typeof sortSelectOptions)[number]['value'];
+const selectedSortOption = ref<SortOption>('price');
+const hotelNameQuery = ref<string | null>('');
+let hotelNameDebounce: ReturnType<typeof setTimeout> | null = null;
 const pagination = reactive({
   page: 1,
   limit: 6,
   totalItems: 0,
   totalPages: 1,
-})
+});
 
 function getSortParams() {
   if (selectedSortOption.value === 'stars') {
     return {
       sortField: 'stars' as const,
       sortOrder: 'desc' as const,
-    }
+    };
   }
 
   return {
     sortField: 'totalPrice' as const,
     sortOrder: 'asc' as const,
-  }
+  };
 }
 
 async function loadHotelsList(
   page = pagination.page,
   placeId: number | null = lastSearchPlaceId.value,
 ) {
-  loading.value = true
-  errorMessage.value = ''
+  loading.value = true;
+  errorMessage.value = '';
 
   try {
-    const normalizedHotelName = hotelNameQuery.value?.trim() ?? ''
+    const normalizedHotelName = hotelNameQuery.value?.trim() ?? '';
 
     const filters = {
       placeId: placeId ?? undefined,
       hotelName: normalizedHotelName || undefined,
       ...getSortParams(),
-    }
+    };
 
     const response = await hotelService.getAll(filters, {
       page,
       limit: pagination.limit,
-    })
+    });
 
-    hotels.value = response.data
-    pagination.page = response.pagination.page
-    pagination.limit = response.pagination.limit
-    pagination.totalItems = response.pagination.totalItems
-    pagination.totalPages = response.pagination.totalPages
+    hotels.value = response.data;
+    pagination.page = response.pagination.page;
+    pagination.limit = response.pagination.limit;
+    pagination.totalItems = response.pagination.totalItems;
+    pagination.totalPages = response.pagination.totalPages;
   } catch (error) {
     errorMessage.value =
-      error instanceof Error
-        ? error.message
-        : 'Não foi possível carregar os hotéis. Tente novamente mais tarde.'
-    hotels.value = []
+      'Não foi possível conectar ao servidor no momento. Por favor, verifique sua conexão ou tente novamente em alguns minutos.';
+    hotels.value = [];
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
 function handleSubmit(placeId: number | null) {
-  lastSearchPlaceId.value = placeId
-  loadHotelsList(1, placeId)
+  lastSearchPlaceId.value = placeId;
+  loadHotelsList(1, placeId);
 }
 
 function handlePageChange(newPage: number) {
-  pagination.page = newPage
-  loadHotelsList(newPage)
+  pagination.page = newPage;
+  loadHotelsList(newPage);
 }
 
 async function openHotelDetails(hotel: Hotel) {
-  selectedHotel.value = hotel
-  isDetailsModalOpen.value = true
-  detailsErrorMessage.value = ''
-  detailsLoading.value = true
+  selectedHotel.value = hotel;
+  isDetailsModalOpen.value = true;
+  detailsErrorMessage.value = '';
+  detailsLoading.value = true;
 
   try {
-    hotelDetails.value = await hotelService.getDetailsById(hotel.id)
+    hotelDetails.value = await hotelService.getDetailsById(hotel.id);
   } catch (error) {
     detailsErrorMessage.value =
       error instanceof Error
         ? error.message
-        : 'Não foi possível carregar os detalhes do hotel. Tente novamente mais tarde.'
+        : 'Não foi possível carregar os detalhes do hotel. Tente novamente mais tarde.';
   } finally {
-    detailsLoading.value = false
+    detailsLoading.value = false;
   }
 }
 
 watch(isDetailsModalOpen, (isOpen) => {
   if (!isOpen) {
-    hotelDetails.value = null
-    selectedHotel.value = null
-    detailsErrorMessage.value = ''
+    hotelDetails.value = null;
+    selectedHotel.value = null;
+    detailsErrorMessage.value = '';
   }
-})
+});
 
 watch(selectedSortOption, () => {
-  loadHotelsList(1)
-})
+  loadHotelsList(1);
+});
 
 watch(
   () => hotelNameQuery.value,
   () => {
     if (hotelNameDebounce) {
-      clearTimeout(hotelNameDebounce)
+      clearTimeout(hotelNameDebounce);
     }
 
     hotelNameDebounce = setTimeout(() => {
-      loadHotelsList(1)
-    }, 400)
+      loadHotelsList(1);
+    }, 400);
   },
-)
+);
 
 onBeforeUnmount(() => {
   if (hotelNameDebounce) {
-    clearTimeout(hotelNameDebounce)
+    clearTimeout(hotelNameDebounce);
   }
-})
+});
 
 onMounted(() => {
-  loadHotelsList(1, null)
-})
+  loadHotelsList(1, null);
+});
 </script>
 
 <template>
@@ -190,19 +188,18 @@ onMounted(() => {
           @show-details="openHotelDetails"
         />
       </div>
-    </section>
 
-    <q-pagination
-      v-if="pagination.totalPages > 1 && hotels.length"
-      v-model="pagination.page"
-      :max="pagination.totalPages"
-      :max-pages="6"
-      color="primary"
-      boundary-links
-      direction-links
-      class="home-page_pagination"
-      @update:model-value="handlePageChange"
-    />
+      <div v-if="pagination.totalPages > 1 && hotels.length" class="home-page__pagination">
+        <q-pagination
+          v-model="pagination.page"
+          :max="pagination.totalPages"
+          :max-pages="6"
+          boundary-links
+          direction-links
+          @update:model-value="handlePageChange"
+        />
+      </div>
+    </section>
 
     <HotelDetailsDrawer
       v-model="isDetailsModalOpen"

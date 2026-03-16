@@ -1,21 +1,40 @@
+@use '@/assets/styles/tokens' as *;
+
 .search-field {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
+  grid-template-columns: 350px auto;
+  gap: $space-2;
   align-items: center;
-  padding: 6px;
+  padding: 8px 12px;
   background: #f4f6fb;
-  border-radius: 999px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  border-radius: $radius-md;
 
   :deep(.q-field--outlined .q-field__control) {
-    border-radius: 999px;
+    border-radius: $radius-md;
     background: #fff;
-    padding-left: 20px;
+    padding-left: 18px;
+    min-height: 48px;
+  }
+
+  :deep(.q-field__native),
+  :deep(.q-field__label) {
+    font-size: $font-size-base;
   }
 
   :deep(.q-field__native) {
-    font-size: 16px;
     font-weight: 500;
+  }
+
+  &__submit {
+    min-width: 140px;
+    height: 44px;
+    border-radius: $radius-md;
+    font-size: $font-size-title;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    justify-self: end;
   }
 }
