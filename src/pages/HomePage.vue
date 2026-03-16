@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SearchDestinationField from '@/components/search/SearchDestinationField.vue'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { HotelService } from '@/services/hotelService'
 import type { Hotel } from '@/types/hotel'
 import HotelCard from '@/components/hotel/HotelCard.vue'
@@ -20,22 +20,18 @@ const pagination = reactive({
   totalPages: 1,
 })
 
-async function fetchHotels(page = pagination.page) {
-  if (!lastSearchPlaceId.value) return
-
+async function fetchHotels(
+  page = pagination.page,
+  placeId: number | null = lastSearchPlaceId.value,
+) {
   loading.value = true
   errorMessage.value = ''
 
   try {
-    const response = await hotelService.getAll(
-      {
-        placeId: lastSearchPlaceId.value,
-      },
-      {
-        page,
-        limit: pagination.limit,
-      },
-    )
+    const response = await hotelService.getAll(placeId ? { placeId } : {}, {
+      page,
+      limit: pagination.limit,
+    })
 
     hotels.value = response.data
     pagination.page = response.pagination.page
@@ -54,16 +50,18 @@ async function fetchHotels(page = pagination.page) {
 }
 
 function handleSubmit(placeId: number | null) {
-  if (placeId === null) return
-
   lastSearchPlaceId.value = placeId
-  fetchHotels(1)
+  fetchHotels(1, placeId)
 }
 
 function handlePageChange(newPage: number) {
   pagination.page = newPage
   fetchHotels(newPage)
 }
+
+onMounted(() => {
+  fetchHotels(1, null)
+})
 </script>
 
 <template>
@@ -72,12 +70,22 @@ function handlePageChange(newPage: number) {
       <SearchDestinationField v-model="selectedPlaceId" @submit="handleSubmit" />
     </section>
 
-    <div class="home-page">
-      <HotelCard v-for="hotel in hotels" :key="hotel.id" :hotel="hotel" />
-    </div>
+    <section class="home-page__results-card">
+      <p v-if="errorMessage" class="home-page__state home-page__state--error">{{ errorMessage }}</p>
+
+      <p v-else-if="loading" class="home-page__state">Carregando hotéis...</p>
+
+      <p v-else-if="!hotels.length" class="home-page__state">
+        Ainda não temos hotéis disponíveis. Tente novamente em instantes.
+      </p>
+
+      <div v-else class="home-page">
+        <HotelCard v-for="hotel in hotels" :key="hotel.id" :hotel="hotel" />
+      </div>
+    </section>
 
     <q-pagination
-      v-if="pagination.totalPages > 1"
+      v-if="pagination.totalPages > 1 && hotels.length"
       v-model="pagination.page"
       :max="pagination.totalPages"
       :max-pages="6"

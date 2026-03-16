@@ -16,6 +16,47 @@
     margin-bottom: $space-4;
   }
 
+  &__eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 11px;
+    font-weight: 600;
+    color: $color-muted;
+  }
+
+  &__title {
+    margin: $space-1 0 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__subtitle {
+    margin: $space-2 0 0;
+    color: $color-muted;
+    line-height: 1.4;
+  }
+
+  &__results-card {
+    @include card-surface;
+    padding: $space-5;
+    min-height: 200px;
+  }
+
+  &__state {
+    margin: 0;
+    padding: $space-4;
+    border-radius: $radius-md;
+    background-color: rgba($color-primary, 0.06);
+    color: $color-muted;
+
+    &--error {
+      background-color: rgba(255, 99, 71, 0.12);
+      color: #b42318;
+    }
+  }
+
   &__pagination {
     margin-top: $space-4;
     justify-content: center;
