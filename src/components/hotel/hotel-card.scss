@@ -35,13 +35,28 @@
     position: absolute;
     top: $space-2;
     left: $space-2;
-    padding: $space-1 $space-2;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
     border-radius: 999px;
-    background: #0ea5e9;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 700;
+    background: #fff;
+    box-shadow: 0 8px 18px rgba(15, 106, 223, 0.15);
     z-index: 2;
+  }
+
+  &__star {
+    font-size: 16px;
+    line-height: 1;
+    transition: color 0.2s ease;
+
+    &--active {
+      color: #0f6adf;
+    }
+
+    &--inactive {
+      color: rgba($color-text, 0.35);
+    }
   }
 
   &__gallery-nav {

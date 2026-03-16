@@ -14,6 +14,12 @@ const emit = defineEmits<{
 
 const visibleAmenities = computed(() => props.hotel.amenities.slice(0, 3))
 
+const starIcons = computed(() => {
+  const numericStars = Number(props.hotel?.stars ?? 0)
+  const rating = Math.max(0, Math.min(5, Math.round(numericStars)))
+  return Array.from({ length: 5 }, (_, index) => index < rating)
+})
+
 function handleDetailsClick() {
   emit('show-details', props.hotel)
 }
@@ -24,7 +30,19 @@ function handleDetailsClick() {
     <div class="hotel-card__media">
       <img :src="hotel.thumb" :alt="hotel.name" class="hotel-card__thumb" loading="lazy" />
 
-      <span class="hotel-card__stars-badge">{{ hotel.stars }}★</span>
+      <div class="hotel-card__stars-badge" aria-label="Classificação do hotel">
+        <span
+          v-for="(isFilled, index) in starIcons"
+          :key="index"
+          :class="[
+            'material-icons',
+            'hotel-card__star',
+            isFilled ? 'hotel-card__star--active' : 'hotel-card__star--inactive',
+          ]"
+        >
+          star
+        </span>
+      </div>
 
       <div class="hotel-card__gallery-nav">
         <button type="button" aria-label="Imagem anterior">

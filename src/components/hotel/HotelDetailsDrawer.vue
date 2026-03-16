@@ -33,6 +33,12 @@ const galleryImages = computed(() => {
 })
 
 const amenities = computed(() => props.details?.amenities ?? [])
+
+const starIcons = computed(() => {
+  const rawRating = Number(props.hotel?.stars ?? 0)
+  const rating = Math.max(0, Math.min(5, Math.round(rawRating)))
+  return Array.from({ length: 5 }, (_, index) => index < rating)
+})
 </script>
 
 <template>
@@ -60,7 +66,19 @@ const amenities = computed(() => props.details?.amenities ?? [])
 
         <div v-else class="hotel-details__content">
           <section v-if="galleryImages.length" class="hotel-details__gallery-card">
-            <span class="hotel-details__stars">{{ hotel?.stars }} ★</span>
+            <div class="hotel-details__stars" aria-label="Classificação do hotel">
+              <span
+                v-for="(isFilled, index) in starIcons"
+                :key="index"
+                :class="[
+                  'material-icons',
+                  'hotel-details__star',
+                  isFilled ? 'hotel-details__star--active' : 'hotel-details__star--inactive',
+                ]"
+              >
+                star
+              </span>
+            </div>
             <div class="hotel-details__gallery">
               <figure v-for="image in galleryImages" :key="image">
                 <img :src="image" :alt="hotel?.name" loading="lazy" />
