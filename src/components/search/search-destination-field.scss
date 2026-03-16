@@ -7,10 +7,10 @@
   align-items: center;
   padding: 8px 12px;
   background: #f4f6fb;
-  border-radius: 999px;
+  border-radius: $radius-md;
 
   :deep(.q-field--outlined .q-field__control) {
-    border-radius: 999px;
+    border-radius: $radius-md;
     background: #fff;
     padding-left: 18px;
     min-height: 48px;
@@ -28,7 +28,7 @@
   &__submit {
     min-width: 140px;
     height: 44px;
-    border-radius: 999px;
+    border-radius: $radius-md;
     font-size: $font-size-title;
     font-weight: 600;
     display: flex;

@@ -190,19 +190,18 @@ onMounted(() => {
           @show-details="openHotelDetails"
         />
       </div>
-    </section>
 
-    <q-pagination
-      v-if="pagination.totalPages > 1 && hotels.length"
-      v-model="pagination.page"
-      :max="pagination.totalPages"
-      :max-pages="6"
-      color="primary"
-      boundary-links
-      direction-links
-      class="home-page_pagination"
-      @update:model-value="handlePageChange"
-    />
+      <div v-if="pagination.totalPages > 1 && hotels.length" class="home-page__pagination">
+        <q-pagination
+          v-model="pagination.page"
+          :max="pagination.totalPages"
+          :max-pages="6"
+          boundary-links
+          direction-links
+          @update:model-value="handlePageChange"
+        />
+      </div>
+    </section>
 
     <HotelDetailsDrawer
       v-model="isDetailsModalOpen"

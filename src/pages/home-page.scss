@@ -8,10 +8,8 @@
   padding: $space-5 0 $space-6;
 
   &__search-card {
-    background: rgba($color-primary, 0.06);
     padding: $space-5;
     border-radius: $radius-lg;
-    box-shadow: $shadow-soft;
     display: flex;
     flex-direction: column;
     gap: $space-4;
@@ -48,6 +46,7 @@
     @include card-surface;
     padding: $space-5;
     min-height: 200px;
+    border-radius: $radius-lg;
   }
 
   &__state {
@@ -65,7 +64,49 @@
 
   &__pagination {
     margin-top: $space-4;
-    justify-content: center;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: $space-5;
+
+    :deep(.q-pagination) {
+      background: #fff;
+      border-radius: 999px;
+      box-shadow: $shadow-soft;
+      padding: 6px 18px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    :deep(.q-pagination__content) {
+      gap: 2px;
+    }
+
+    :deep(.q-btn),
+    :deep(.q-pagination__page) {
+      min-width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      font-size: $font-size-title;
+      font-weight: 600;
+      color: $color-primary;
+      background: transparent;
+      transition:
+        background 0.2s,
+        color 0.2s;
+    }
+
+    :deep(.q-pagination__page--active),
+    :deep(.q-btn--active) {
+      background: $color-primary;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba($color-primary, 0.12);
+    }
+
+    :deep(.q-btn--flat) {
+      color: $color-muted;
+    }
   }
 }
 

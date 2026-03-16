@@ -10,7 +10,7 @@
 
   &__sort {
     background: $color-surface;
-    border-radius: 16px;
+    border-radius: $radius-md;
     box-shadow: $shadow-soft;
     padding: $space-2 $space-3;
     display: flex;
@@ -32,13 +32,13 @@
     width: 100%;
     min-width: 120px;
     :deep(.q-field__control) {
-      border-radius: 999px;
+      border-radius: $radius-md;
     }
   }
 
   &__input {
     background: $color-surface;
-    border-radius: 16px;
+    border-radius: $radius-md;
     box-shadow: $shadow-soft;
     padding: $space-2 $space-3;
     width: 100%;
@@ -46,7 +46,7 @@
     max-width: 320px;
     flex: 2 1 220px;
     :deep(.q-field__control) {
-      border-radius: 999px;
+      border-radius: $radius-md;
     }
   }
 }

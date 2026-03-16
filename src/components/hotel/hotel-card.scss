@@ -8,7 +8,7 @@
   gap: $space-4;
   padding: $space-4;
   border-radius: 24px;
-  box-shadow: 0 25px 45px rgba(14, 165, 233, 0.15);
+  border: 1.5px solid $color-border;
 
   &__media {
     position: relative;
@@ -19,9 +19,7 @@
     &::after {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.35) 100%);
-    }
+      inset: 0;    }
   }
 
   &__thumb {
@@ -99,7 +97,6 @@
   }
 
   &__district {
-    margin: $space-1 0 0;
     color: $color-muted;
   }
 
