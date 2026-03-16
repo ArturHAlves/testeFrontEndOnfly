@@ -8,17 +8,60 @@
 - Sass (SCSS)
 - BEM para nomenclatura CSS
 
+
+## Como rodar o projeto localmente
+
+1. Clone o repositório:
+   ```sh
+   git clone <url-do-repo>
+   cd testeFrontOnFly
+   ```
+
+2. Instale as dependências:
+   ```sh
+   npm install
+   ```
+
+3. Rode o frontend:
+   ```sh
+   npm run dev
+   ```
+
+4. Rode o backend fake (JSON Server) em outro terminal:
+   ```sh
+   npm run json-server
+   ```
+   O JSON Server ficará disponível em http://localhost:3000.
+
+5. Acesse o frontend em http://localhost:5173 (ou porta indicada pelo Vite).
+
+> Para o projeto funcionar corretamente, é necessário rodar ambos os comandos (dev e json-server) ao mesmo tempo.
+
+---
+
+Se quiser rodar os testes:
+```sh
+npm run test:unit
+```
+
+
 ## Arquitetura
 
 ```text
 src/
   assets/
-    styles/
-  layouts/
-  pages/
-  plugins/
-  router/
-  main.ts
+    styles/           # Tokens, mixins e estilos globais
+  components/
+    hotel/            # HotelCard, HotelDetailsDrawer e estilos
+    search/           # SearchDestinationField, SearchFiltersBar e estilos
+  layouts/            # Layouts base
+  pages/              # HomePage, AboutView, etc.
+  plugins/            # Configurações de plugins (ex: Quasar)
+  router/             # Rotas da aplicação
+  stores/             # Pinia stores (ex: counter)
+  views/              # Views principais
+  main.ts             # Entry point
+  payload.json        # Dados mockados para o JSON Server
 ```
 
 ## Comandos
