@@ -66,12 +66,17 @@ function handleDetailsClick() {
       <div>
         <p class="hotel-card__price-label">Por dia</p>
         <p class="hotel-card__price">{{ formatCurrencyFromCents(hotel.dailyPrice) }}</p>
-        <p class="hotel-card__price-note">
-          Tarifas {{ formatCurrencyFromCents(hotel.tax) }}
-        </p>
+        <p class="hotel-card__price-note">Tarifas {{ formatCurrencyFromCents(hotel.tax) }}</p>
       </div>
 
-      <q-btn class="hotel-card__action" label="Ver detalhes" color="primary" rounded no-caps @click="handleDetailsClick" />
+      <q-btn
+        class="hotel-card__action"
+        label="Ver detalhes"
+        color="primary"
+        rounded
+        no-caps
+        @click="handleDetailsClick"
+      />
     </div>
   </article>
 </template>
