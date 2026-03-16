@@ -27,7 +27,7 @@
 
   &__body {
     flex: 1;
-    min-height: 0; // allow inner scroll within flex column
+    min-height: 0;
     padding: $space-5;
     overflow-y: auto;
     background: #f4f6fb;
@@ -99,7 +99,7 @@
 
     img {
       width: 100%;
-      max-height: 140px;
+      max-height: 120px;
       object-fit: cover;
       display: block;
     }

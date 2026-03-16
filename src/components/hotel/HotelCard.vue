@@ -82,12 +82,28 @@ function handleDetailsClick() {
     </div>
 
     <div class="hotel-card__pricing">
-      <div>
-        <p class="hotel-card__price-label">Por dia</p>
-        <p class="hotel-card__price">{{ formatCurrencyFromCents(hotel.dailyPrice) }}</p>
-        <p class="hotel-card__price-note">Tarifas {{ formatCurrencyFromCents(hotel.tax) }}</p>
+      <p class="hotel-card__price-label">Por dia</p>
+      <p class="hotel-card__price">{{ formatCurrencyFromCents(hotel.dailyPrice) }}</p>
+      <div class="hotel-card__pricing-table">
+        <div class="hotel-card__pricing-row">
+          <span class="hotel-card__pricing-label">Diárias</span>
+          <span class="hotel-card__pricing-value"
+            >Diária {{ formatCurrencyFromCents(hotel.dailyPrice) }}</span
+          >
+        </div>
+        <div class="hotel-card__pricing-row">
+          <span class="hotel-card__pricing-label">Taxas</span>
+          <span class="hotel-card__pricing-value"
+            >Taxa {{ formatCurrencyFromCents(hotel.tax) }}</span
+          >
+        </div>
+        <div class="hotel-card__pricing-row">
+          <span class="hotel-card__pricing-label">Total</span>
+          <span class="hotel-card__pricing-value">{{
+            formatCurrencyFromCents(hotel.totalPrice)
+          }}</span>
+        </div>
       </div>
-
       <q-btn
         class="hotel-card__action"
         label="Ver detalhes"
