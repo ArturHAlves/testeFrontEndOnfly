@@ -1,11 +1,23 @@
 @use '@/assets/styles/tokens' as *;
 @use '@/assets/styles/mixins' as *;
 
-
 .home-page {
   display: flex;
   flex-direction: column;
   gap: $space-5;
   padding: $space-5 0 $space-6;
 
+  &__search-card {
+    @include card-surface;
+    padding: $space-5;
+  }
+
+  &__search-header {
+    margin-bottom: $space-4;
+  }
+
+  &__pagination {
+    margin-top: $space-4;
+    justify-content: center;
+  }
 }

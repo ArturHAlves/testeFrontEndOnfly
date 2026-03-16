@@ -59,25 +59,33 @@ function handleSubmit(placeId: number | null) {
   lastSearchPlaceId.value = placeId
   fetchHotels(1)
 }
+
+function handlePageChange(newPage: number) {
+  pagination.page = newPage
+  fetchHotels(newPage)
+}
 </script>
 
 <template>
   <section class="home-page">
     <section class="home-page__search-card">
-      <div class="home-page__search-header">
-        <div>
-          <p class="home-page__eyebrow">Filtro</p>
-          <h2 class="home-page__card-title">Destino</h2>
-          <p class="home-page__card-text">
-            Digite pelo menos tres letras, confirme em \"Buscar Hotel\" e carregaremos a lista
-            paginada.
-          </p>
-        </div>
-      </div>
-
       <SearchDestinationField v-model="selectedPlaceId" @submit="handleSubmit" />
     </section>
-  </section>
 
-  <HotelCard v-for="hotel in hotels" :key="hotel.id" :hotel="hotel" />
+    <div class="home-page">
+      <HotelCard v-for="hotel in hotels" :key="hotel.id" :hotel="hotel" />
+    </div>
+
+    <q-pagination
+      v-if="pagination.totalPages > 1"
+      v-model="pagination.page"
+      :max="pagination.totalPages"
+      :max-pages="6"
+      color="primary"
+      boundary-links
+      direction-links
+      class="home-page_pagination"
+      @update:model-value="handlePageChange"
+    />
+  </section>
 </template>
