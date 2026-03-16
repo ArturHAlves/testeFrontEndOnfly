@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import payload from '../../../payload.json'
 import { normalizeText } from '@/utils/text'
 import type { City } from '@/types/city'
+import './search-destination-field.scss'
 
 interface Option {
   label: string
@@ -101,27 +102,3 @@ function onSubmit() {
     />
   </div>
 </template>
-
-<style scoped lang="scss">
-.search-field {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
-  align-items: center;
-  padding: 6px;
-  background: #f4f6fb;
-  border-radius: 999px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
-
-  :deep(.q-field--outlined .q-field__control) {
-    border-radius: 999px;
-    background: #fff;
-    padding-left: 20px;
-  }
-
-  :deep(.q-field__native) {
-    font-size: 16px;
-    font-weight: 500;
-  }
-}
-</style>

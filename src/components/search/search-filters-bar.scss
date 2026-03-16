@@ -1,0 +1,33 @@
+@use '@/assets/styles/tokens' as *;
+
+.search-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: $space-3;
+  background: $color-surface;
+  border-radius: 999px;
+  padding: $space-2 $space-3;
+  box-shadow: $shadow-soft;
+
+  &__sort {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  &__label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: $color-muted;
+  }
+
+  &__select,
+  &__input {
+    width: 100%;
+
+    :deep(.q-field__control) {
+      border-radius: 999px;
+    }
+  }
+}

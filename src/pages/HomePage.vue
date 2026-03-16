@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SearchDestinationField from '@/components/search/SearchDestinationField.vue'
+import SearchFiltersBar from '@/components/search/SearchFiltersBar.vue'
 import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { HotelService } from '@/services/hotelService'
 import type { Hotel, HotelDetails } from '@/types/hotel'
@@ -165,34 +166,11 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="search-panel__filters">
-        <div class="search-panel__sort">
-          <label class="search-panel__label" for="sort-select">Ordenar por:</label>
-          <q-select
-            id="sort-select"
-            v-model="selectedSortOption"
-            :options="sortSelectOptions"
-            emit-value
-            map-options
-            outlined
-            dense
-            rounded
-            dropdown-icon="expand_more"
-            class="search-panel__select"
-          />
-        </div>
-
-        <q-input
-          v-model="hotelNameQuery"
-          outlined
-          dense
-          rounded
-          placeholder="Nome do Hotel"
-          clearable
-          class="search-panel__input"
-          prepend-inner-icon="search"
-        />
-      </div>
+      <SearchFiltersBar
+        :sort-options="sortSelectOptions"
+        v-model:sort-value="selectedSortOption"
+        v-model:hotel-name="hotelNameQuery"
+      />
     </section>
 
     <section class="home-page__results-card">
