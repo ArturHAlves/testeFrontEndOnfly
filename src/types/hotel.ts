@@ -30,8 +30,13 @@ export interface HotelDetailAmenity {
   label: string
 }
 
+export type HotelSortField = 'totalPrice' | 'stars'
+
 export interface HotelFilters {
   placeId?: number
+  sortField?: HotelSortField
+  sortOrder?: 'asc' | 'desc'
+  hotelName?: string
 }
 
 export interface PaginationOptions {

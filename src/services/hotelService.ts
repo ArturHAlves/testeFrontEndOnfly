@@ -11,10 +11,21 @@ export class HotelService {
   }
 
   async getAll(filters: HotelFilters, pagination: PaginationOptions): Promise<apiData<Hotel>> {
-    const params = {
+    const { sortField, sortOrder, hotelName, ...restFilters } = filters
+
+    const params: Record<string, string | number | boolean | undefined> = {
       page: pagination.page ?? 1,
       limit: pagination.limit ?? 10,
-      ...filters,
+      ...restFilters,
+    }
+
+    if (sortField) {
+      params._sort = sortField
+      params._order = sortOrder ?? 'asc'
+    }
+
+    if (hotelName) {
+      params.name_like = hotelName
     }
 
     const response = await this.client.get<Hotel>(this.endpoint, params)
