@@ -76,10 +76,9 @@ async function loadHotelsList(
     pagination.totalItems = response.pagination.totalItems
     pagination.totalPages = response.pagination.totalPages
   } catch (error) {
+    // Mensagem moderna e amigável para erro de conexão ou fetch
     errorMessage.value =
-      error instanceof Error
-        ? error.message
-        : 'Não foi possível carregar os hotéis. Tente novamente mais tarde.'
+      'Não foi possível conectar ao servidor no momento. Por favor, verifique sua conexão ou tente novamente em alguns minutos.'
     hotels.value = []
   } finally {
     loading.value = false
