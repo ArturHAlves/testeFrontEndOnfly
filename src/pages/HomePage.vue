@@ -17,7 +17,7 @@ const pagination = reactive({
   limit: 6,
   totalItems: 0,
   totalPages: 1,
-})
+});
 
 async function fetchHotels(page = pagination.page) {
   if (!lastSearchPlaceId.value) return
