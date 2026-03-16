@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import payload from '../../../payload.json'
 import { normalizeText } from '@/utils/text'
-import { watch } from 'vue'
 import type { City } from '@/types/city'
 
 interface Option {
@@ -30,13 +29,13 @@ const allOptions: Option[] = cities.map((city) => ({
 
 const options = ref<Option[]>([])
 const selectedOption = ref<Option | null>(null)
-const selectRef = ref<{ updateInputValue?: (value: string) => void } | null>(null)
 
 watch(
   () => props.modelValue,
   (newValue) => {
     selectedOption.value = allOptions.find((option) => option.value === newValue) ?? null
   },
+  { immediate: true },
 )
 
 function onFilter(inputValue: string, update: (callback: () => void) => void) {
@@ -58,15 +57,17 @@ function onFilter(inputValue: string, update: (callback: () => void) => void) {
 }
 
 function onSubmit() {
-  const value = selectedOption.value?.value ?? null
+  if (!selectedOption.value) {
+    return
+  }
+
+  const value = selectedOption.value.value ?? null
   const placeId = typeof value === 'number' ? value : null
 
   emit('submit', placeId)
   emit('update:modelValue', placeId ?? '')
 
-  selectedOption.value = null
   options.value = []
-  selectRef.value?.updateInputValue?.('')
 }
 </script>
 
@@ -84,6 +85,8 @@ function onSubmit() {
       @filter="onFilter"
       input-debounce="400"
       dense
+      rounded
+      input-class="search-field__input"
       label="Destino"
     />
 
@@ -91,6 +94,8 @@ function onSubmit() {
       color="primary"
       label="Buscar Hotel"
       unelevated
+      rounded
+      size="lg"
       :disable="!selectedOption"
       @click="onSubmit"
     />
@@ -101,7 +106,22 @@ function onSubmit() {
 .search-field {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 8px;
-  align-items: end;
+  gap: 12px;
+  align-items: center;
+  padding: 6px;
+  background: #f4f6fb;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
+  :deep(.q-field--outlined .q-field__control) {
+    border-radius: 999px;
+    background: #fff;
+    padding-left: 20px;
+  }
+
+  :deep(.q-field__native) {
+    font-size: 16px;
+    font-weight: 500;
+  }
 }
 </style>

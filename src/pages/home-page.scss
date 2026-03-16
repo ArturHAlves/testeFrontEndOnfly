@@ -8,8 +8,13 @@
   padding: $space-5 0 $space-6;
 
   &__search-card {
-    @include card-surface;
+    background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
     padding: $space-5;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-soft;
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
   }
 
   &__search-header {
@@ -60,5 +65,85 @@
   &__pagination {
     margin-top: $space-4;
     justify-content: center;
+  }
+}
+
+.search-panel {
+  background: $color-surface;
+  border-radius: 28px;
+  padding: $space-5;
+  box-shadow: 0 20px 40px rgba(14, 165, 233, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+
+  &__tabs {
+    display: flex;
+    gap: $space-4;
+    padding-bottom: $space-2;
+    border-bottom: 1px solid rgba($color-border, 0.6);
+  }
+
+  &__tab {
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 600;
+    color: $color-muted;
+    padding: $space-1 0;
+    position: relative;
+    cursor: pointer;
+
+    &--active {
+      color: $color-primary;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -$space-2;
+        height: 3px;
+        border-radius: 999px;
+        background-color: $color-primary;
+      }
+    }
+  }
+
+  &__destination {
+    margin-top: $space-2;
+  }
+
+  &__filters {
+    margin-top: -$space-2;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: $space-3;
+    background: $color-surface;
+    border-radius: 999px;
+    padding: $space-2 $space-3;
+    box-shadow: $shadow-soft;
+  }
+
+  &__sort {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  &__label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: $color-muted;
+  }
+
+  &__select,
+  &__input {
+    width: 100%;
+
+    :deep(.q-field__control) {
+      border-radius: 999px;
+    }
   }
 }

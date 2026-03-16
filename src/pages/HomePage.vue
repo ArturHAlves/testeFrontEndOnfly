@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SearchDestinationField from '@/components/search/SearchDestinationField.vue'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { HotelService } from '@/services/hotelService'
 import type { Hotel, HotelDetails } from '@/types/hotel'
 import HotelCard from '@/components/hotel/HotelCard.vue'
@@ -16,15 +16,37 @@ const loading = ref(false)
 const lastSearchPlaceId = ref<number | null>(null)
 const isDetailsModalOpen = ref(false)
 const selectedHotel = ref<Hotel | null>(null)
-const deatilsLoading = ref(false)
+const detailsLoading = ref(false)
 const detailsErrorMessage = ref('')
 const hotelDetails = ref<HotelDetails | null>(null)
+const sortSelectOptions = [
+  { label: 'Preço', value: 'price' },
+  { label: 'Estrelas', value: 'stars' },
+] as const
+type SortOption = (typeof sortSelectOptions)[number]['value']
+const selectedSortOption = ref<SortOption>('price')
+const hotelNameQuery = ref<string | null>('')
+let hotelNameDebounce: ReturnType<typeof setTimeout> | null = null
 const pagination = reactive({
   page: 1,
   limit: 6,
   totalItems: 0,
   totalPages: 1,
 })
+
+function getSortParams() {
+  if (selectedSortOption.value === 'stars') {
+    return {
+      sortField: 'stars' as const,
+      sortOrder: 'desc' as const,
+    }
+  }
+
+  return {
+    sortField: 'totalPrice' as const,
+    sortOrder: 'asc' as const,
+  }
+}
 
 async function loadHotelsList(
   page = pagination.page,
@@ -34,7 +56,15 @@ async function loadHotelsList(
   errorMessage.value = ''
 
   try {
-    const response = await hotelService.getAll(placeId ? { placeId } : {}, {
+    const normalizedHotelName = hotelNameQuery.value?.trim() ?? ''
+
+    const filters = {
+      placeId: placeId ?? undefined,
+      hotelName: normalizedHotelName || undefined,
+      ...getSortParams(),
+    }
+
+    const response = await hotelService.getAll(filters, {
       page,
       limit: pagination.limit,
     })
@@ -69,7 +99,7 @@ async function openHotelDetails(hotel: Hotel) {
   selectedHotel.value = hotel
   isDetailsModalOpen.value = true
   detailsErrorMessage.value = ''
-  deatilsLoading.value = true
+  detailsLoading.value = true
 
   try {
     hotelDetails.value = await hotelService.getDetailsById(hotel.id)
@@ -79,7 +109,7 @@ async function openHotelDetails(hotel: Hotel) {
         ? error.message
         : 'Não foi possível carregar os detalhes do hotel. Tente novamente mais tarde.'
   } finally {
-    deatilsLoading.value = false
+    detailsLoading.value = false
   }
 }
 
@@ -91,6 +121,29 @@ watch(isDetailsModalOpen, (isOpen) => {
   }
 })
 
+watch(selectedSortOption, () => {
+  loadHotelsList(1)
+})
+
+watch(
+  () => hotelNameQuery.value,
+  () => {
+    if (hotelNameDebounce) {
+      clearTimeout(hotelNameDebounce)
+    }
+
+    hotelNameDebounce = setTimeout(() => {
+      loadHotelsList(1)
+    }, 400)
+  },
+)
+
+onBeforeUnmount(() => {
+  if (hotelNameDebounce) {
+    clearTimeout(hotelNameDebounce)
+  }
+})
+
 onMounted(() => {
   loadHotelsList(1, null)
 })
@@ -99,7 +152,47 @@ onMounted(() => {
 <template>
   <section class="home-page">
     <section class="home-page__search-card">
-      <SearchDestinationField v-model="selectedPlaceId" @submit="handleSubmit" />
+      <div class="search-panel">
+        <nav class="search-panel__tabs">
+          <button class="search-panel__tab" type="button">Aéreo</button>
+          <button class="search-panel__tab search-panel__tab--active" type="button">Hotel</button>
+          <button class="search-panel__tab" type="button">Carro</button>
+          <button class="search-panel__tab" type="button">Ônibus</button>
+        </nav>
+
+        <div class="search-panel__destination">
+          <SearchDestinationField v-model="selectedPlaceId" @submit="handleSubmit" />
+        </div>
+      </div>
+
+      <div class="search-panel__filters">
+        <div class="search-panel__sort">
+          <label class="search-panel__label" for="sort-select">Ordenar por:</label>
+          <q-select
+            id="sort-select"
+            v-model="selectedSortOption"
+            :options="sortSelectOptions"
+            emit-value
+            map-options
+            outlined
+            dense
+            rounded
+            dropdown-icon="expand_more"
+            class="search-panel__select"
+          />
+        </div>
+
+        <q-input
+          v-model="hotelNameQuery"
+          outlined
+          dense
+          rounded
+          placeholder="Nome do Hotel"
+          clearable
+          class="search-panel__input"
+          prepend-inner-icon="search"
+        />
+      </div>
     </section>
 
     <section class="home-page__results-card">
@@ -137,9 +230,8 @@ onMounted(() => {
       v-model="isDetailsModalOpen"
       :hotel="selectedHotel"
       :details="hotelDetails"
-      :loading="deatilsLoading"
+      :loading="detailsLoading"
       :error-message="detailsErrorMessage"
     />
-
   </section>
 </template>
