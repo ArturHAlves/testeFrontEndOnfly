@@ -29,7 +29,15 @@ src/
 npm install
 npm run dev
 npm run build
+npm run json-server
+npm run test:unit
 ```
+
+### Executando os testes unitários
+
+- Rode `npm run test:unit` para executar o Vitest uma vez.
+- Use `npm run test:unit -- --watch` caso queira manter o runner observando alterações.
+- Os specs ficam em `src/tests/**` e já cobrem os services (`CityService`, `HotelService`) com mocks do `JsonServerClient`.
 
 ## Padroes de design
 
